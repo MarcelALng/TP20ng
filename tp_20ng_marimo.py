@@ -193,12 +193,21 @@ def _(debut_total, rapport, score, time):
     fin_total = time.time()
     temps_total = fin_total - debut_total
 
+    # --- Étape Bonus : Estimation de la consommation ---
+    # Un ordinateur portable consomme environ 30 Watts (W) quand il travaille.
+    puissance_W = 30
+    # On calcule l'énergie en Joules (J) car J = W * secondes
+    conso_joules = puissance_W * temps_total
+
     print("=== RÉSULTATS FINAUX ===")
-    print(f"Temps d'exécution : {temps_total:.2f} secondes")
-    print(f"Score final : {score:.4f}")
+    print(f"Temps de calcul total : {temps_total:.2f} secondes")
+    print(f"Puissance utilisée (estimée) : {puissance_W} W")
+    print(f"Énergie consommée (estimée) : {conso_joules:.2f} Joules")
+    print("-" * 30)
+    print(f"Score final (Accuracy) : {score:.4f}")
     print("\nDétails par catégorie :")
     print(rapport)
-    return
+    return conso_joules, fin_total, puissance_W, temps_total
 
 
 if __name__ == "__main__":
