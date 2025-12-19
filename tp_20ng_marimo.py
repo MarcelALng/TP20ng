@@ -14,9 +14,9 @@ def _():
 def _(mo):
     mo.md(r"""
     # TP 20ng - Classification de textes
-    **Auteurs :** Marcel  Nguyen
-    **Établissement :** Master NLP
-    **Date :** 19 décembre 2025
+    Marcel  Nguyen
+    22500971
+    19 décembre 2025
     """)
     return
 
@@ -24,9 +24,6 @@ def _(mo):
 @app.cell
 def _(mo):
     mo.md(r"""
-    ### Étape 1 : Les outils et la graine magique (Random Seed)
-    Pour commencer, on a besoin de quelques outils. On va importer `scikit-learn` qui est une bibliothèque super connue pour faire de l'intelligence artificielle.
-
     On fixe aussi une `random_seed` pour que si on relance le programme, on ait exactement les mêmes résultats.
     """)
     return
@@ -42,12 +39,11 @@ def _():
     from sklearn.metrics import accuracy_score, classification_report
     from sklearn.model_selection import GridSearchCV
 
-    # On utilise ce nom pour que ce soit clair
     random_seed = 42
     np.random.seed(random_seed)
 
-    # On commence le chrono pour tout le notebook
-    debut_total = time.time()
+
+    debut_total = time.time() #ajout pour trouver temps du calcul
     return (
         GridSearchCV,
         MultinomialNB,
@@ -63,23 +59,22 @@ def _():
 @app.cell
 def _(mo):
     mo.md(r"""
-    ### Étape 2 : Chargement des données
     On va charger les données du jeu "20 Newsgroups" (des vieux messages de forums).
-    On doit enlever les headers, footers et quotes comme demandé, pour ne pas que le modèle "triche" en lisant les noms des expéditeurs par exemple.
+    On doit enlever les headers, footers et quotes comme.
     """)
     return
 
 
 @app.cell
 def _(fetch_20newsgroups):
-    # On télécharge les données d'entraînement (train)
+    # On télécharge les données d'entraînement
     data_train = fetch_20newsgroups(
         subset="train", 
         remove=("headers", "footers", "quotes"),
         random_state=42 # On remet la graine ici aussi pour être sûr
     )
 
-    # On télécharge les données de test (test)
+    # On télécharge les données de test 
     data_test = fetch_20newsgroups(
         subset="test", 
         remove=("headers", "footers", "quotes"),
@@ -94,8 +89,6 @@ def _(fetch_20newsgroups):
 @app.cell
 def _(mo):
     mo.md(r"""
-    ### Étape 3 : Transformer le texte en chiffres (Vectorisation)
-    L'ordinateur ne sait pas lire le texte directement. Il lui faut des chiffres !
     On utilise `TfidfVectorizer`. C'est un outil qui compte les mots, mais qui donne moins d'importance aux mots trop fréquents (comme "the", "a") et plus d'importance aux mots rares qui veulent dire quelque chose.
     """)
     return
@@ -103,15 +96,12 @@ def _(mo):
 
 @app.cell
 def _(TfidfVectorizer, data_test, data_train):
-    # On crée notre traducteur texte -> chiffres
-    # On limite un peu le nombre de mots pour que ce soit plus rapide
-    vectorizer = TfidfVectorizer(stop_words='english', max_features=10000)
+    vectorizer = TfidfVectorizer(stop_words='english', max_features=10000) 
+    # limite à 10000 pour accélérer le calcul
 
-    # On apprend les mots avec les données de train et on transforme
     X_train = vectorizer.fit_transform(data_train.data)
     y_train = data_train.target
 
-    # On transforme les données de test (SANS réapprendre, on utilise ce qu'on a déjà appris)
     X_test = vectorizer.transform(data_test.data)
     y_test = data_test.target
 
@@ -122,9 +112,8 @@ def _(TfidfVectorizer, data_test, data_train):
 @app.cell
 def _(mo):
     mo.md(r"""
-    ### Étape 4 : Entraînement et recherche du meilleur réglage
+    Entraînement et recherche du meilleur réglage
     On utilise un modèle appelé `MultinomialNB` (Naive Bayes). C'est un classique très efficace pour classer des textes.
-
     On va aussi utiliser `GridSearchCV` pour essayer plusieurs réglages (le paramètre `alpha`) et voir lequel est le meilleur.
     """)
     return
@@ -151,7 +140,7 @@ def _(GridSearchCV, MultinomialNB, X_train, y_train):
 @app.cell
 def _(mo):
     mo.md(r"""
-    ### Étape 5 : Évaluation des résultats
+    Évaluation des résultats
     Maintenant on regarde si notre modèle est bon en lui faisant prédire les catégories des messages de test qu'il n'a jamais vus.
     """)
     return
@@ -182,8 +171,7 @@ def _(
 @app.cell
 def _(mo):
     mo.md(r"""
-    ### Conclusion et Temps d'exécution
-    Voici le bilan final !
+    Conclusion et Temps d'exécution
     """)
     return
 
@@ -193,7 +181,6 @@ def _(debut_total, rapport, score, time):
     fin_total = time.time()
     temps_total = fin_total - debut_total
 
-    # --- Étape Bonus : Estimation de la consommation (MacBook Pro M1) ---
     # Un MacBook Pro M1 consomme environ 30 Watts (W) lorsqu'il travaille à plein régime.
     # C'est une estimation moyenne qui inclut le processeur M1 et la mémoire (16 Go).
     puissance_W = 30
@@ -208,7 +195,7 @@ def _(debut_total, rapport, score, time):
     print(f"Score final (Accuracy) : {score:.4f}")
     print("\nDétails par catégorie :")
     print(rapport)
-    return conso_joules, fin_total, puissance_W, temps_total
+    return
 
 
 if __name__ == "__main__":
