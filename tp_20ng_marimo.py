@@ -193,10 +193,11 @@ def _(debut_total, rapport, score, time):
     fin_total = time.time()
     temps_total = fin_total - debut_total
 
-    # --- Étape Bonus : Estimation de la consommation ---
-    # Un ordinateur portable consomme environ 30 Watts (W) quand il travaille.
+    # --- Étape Bonus : Estimation de la consommation (MacBook Pro M1) ---
+    # Un MacBook Pro M1 consomme environ 30 Watts (W) lorsqu'il travaille à plein régime.
+    # C'est une estimation moyenne qui inclut le processeur M1 et la mémoire (16 Go).
     puissance_W = 30
-    # On calcule l'énergie en Joules (J) car J = W * secondes
+    # On calcule l'énergie en Joules (J) : J = Watts * secondes
     conso_joules = puissance_W * temps_total
 
     print("=== RÉSULTATS FINAUX ===")
